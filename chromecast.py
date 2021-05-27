@@ -2,8 +2,8 @@
 import pychromecast
 
 
-def get_chromecast():
-    chromecasts, _ = pychromecast.get_listed_chromecasts(friendly_names=["Living Room TV"])
+def get_chromecast(chromecast_name):
+    chromecasts, _ = pychromecast.get_listed_chromecasts(friendly_names=[chromecast_name])
 
     if not chromecasts:
         raise Exception('Could not find Chromecast.')

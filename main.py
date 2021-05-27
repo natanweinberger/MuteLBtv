@@ -8,6 +8,7 @@ from schedule import get_game_pk
 
 # Team IDs: https://statsapi.mlb.com/api/v1/teams?sportId=1&season=2021
 DEFAULT_TEAM_ID = 143  # Phillies
+DEFAULT_CHROMECAST_NAME = 'Living Room TV'
 API_POLL_INTERVAL = 5  # seconds
 
 
@@ -28,9 +29,9 @@ def run(game_pk, chromecast, timecode, verbose=False):
         if verbose: log.info('Is not mid-inning, unmuting Chromecast\n')
 
 
-def main(game_pk, offset):
+def main(game_pk, offset, chromecast_name=DEFAULT_CHROMECAST_NAME):
     ''' Get the game_pk (if not provided) and execute the `run` function in a loop. '''
-    chromecast = get_chromecast()
+    chromecast = get_chromecast(chromecast_name)
 
     if not game_pk:
         log.info('No game_pk provided. Defaulting to default team\'s game.')
@@ -54,10 +55,10 @@ def get_args():
 
     parser.add_argument('--game_pk', help='The MLB game_pk.')
     parser.add_argument('--offset', type=int, help='The amount of time (in seconds) to delay the feed by, since TV streams are usually delayed.')
-
+    parser.add_argument('--chromecast_name', default=None, help='The name of the Chromecast to use.')
     return parser.parse_args()
 
 
 if __name__ == '__main__':
     ARGS = get_args()
-    main(ARGS.game_pk, ARGS.offset)
+    main(ARGS.game_pk, ARGS.offset, ARGS.chromecast_name)
