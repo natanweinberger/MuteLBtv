@@ -8,6 +8,7 @@ from schedule import get_game_pk
 
 # Team IDs: https://statsapi.mlb.com/api/v1/teams?sportId=1&season=2021
 DEFAULT_TEAM_ID = 143  # Phillies
+API_POLL_INTERVAL = 5  # seconds
 
 
 def run(game_pk, chromecast, timecode, verbose=False):
@@ -28,6 +29,7 @@ def run(game_pk, chromecast, timecode, verbose=False):
 
 
 def main(game_pk, offset):
+    ''' Get the game_pk (if not provided) and execute the `run` function in a loop. '''
     chromecast = get_chromecast()
 
     if not game_pk:
@@ -44,14 +46,14 @@ def main(game_pk, offset):
             timecode = None
 
         run(game_pk, chromecast, timecode, verbose=True)
-        sleep(5)
+        sleep(API_POLL_INTERVAL)
 
 
 def get_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--game_pk')
-    parser.add_argument('--offset', type=int)
+    parser.add_argument('--game_pk', help='The MLB game_pk.')
+    parser.add_argument('--offset', type=int, help='The amount of time (in seconds) to delay the feed by, since TV streams are usually delayed.')
 
     return parser.parse_args()
 

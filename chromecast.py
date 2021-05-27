@@ -1,3 +1,4 @@
+''' Functions to manipulate Chromecast. '''
 import pychromecast
 
 
