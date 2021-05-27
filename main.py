@@ -6,6 +6,9 @@ from logger import log
 from game import get_feed, is_mid_inning, convert_datetime_to_timecode, get_timestamp_from_feed
 from schedule import get_game_pk
 
+# Team IDs: https://statsapi.mlb.com/api/v1/teams?sportId=1&season=2021
+DEFAULT_TEAM_ID = 143  # Phillies
+
 
 def run(game_pk, chromecast, timecode, verbose=False):
     ''' Get the game feed, determine if the game is mid-inning and update the mute state. '''
@@ -28,9 +31,10 @@ def main(game_pk, offset):
     chromecast = get_chromecast()
 
     if not game_pk:
-        log.info('No game_pk provided. Defaulting to today\'s Phillies game.')
-        game_pk = get_game_pk(date=datetime.now(), team_id=143)
-        log.info(f'game_pk: {game_pk}')
+        log.info('No game_pk provided. Defaulting to default team\'s game.')
+        game_pk = get_game_pk(date=datetime.now(), team_id=DEFAULT_TEAM_ID)
+
+    log.info(f'game_pk: {game_pk}')
 
     while True:
         if offset:
