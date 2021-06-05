@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from time import sleep
 from chromecast import get_chromecast
 from logger import log
-from game import get_feed, is_mid_inning, convert_datetime_to_timecode, get_timestamp_from_feed
+from game import get_feed, is_game_paused, convert_datetime_to_timecode, get_timestamp_from_feed
 from schedule import get_game_pk
 
 # Team IDs: https://statsapi.mlb.com/api/v1/teams?sportId=1&season=2021
@@ -21,7 +21,7 @@ def run(game_pk, chromecast, timecode, verbose=False):
 
     log.info(f'Feed timestamp: {timestamp}')
 
-    if is_mid_inning(feed):
+    if is_game_paused(feed):
         chromecast.set_volume_muted(True)
         if verbose: log.info('Is mid-inning, muting Chromecast\n')
     else:

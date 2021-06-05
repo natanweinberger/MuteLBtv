@@ -25,10 +25,10 @@ def get_timestamp_from_feed(feed):
     return feed['metaData']['timeStamp']
 
 
-def is_mid_inning(feed):
-    ''' Return true if the feed indicates the game is between innings. '''
-    return 'midInning' in feed['metaData']['logicalEvents']
-
+def is_game_paused(feed):
+    ''' Return true if the feed indicates the game is paused (due to inning change or pitching change). '''
+    logical_events = ['midInning', 'pitcherChange']
+    return any([logical_event in feed['metaData']['logicalEvents'] for logical_event in logical_events])
 
 def convert_datetime_to_timecode(dt):
     ''' Given a datetime, return a string formatted for the timecode param of the API. '''
